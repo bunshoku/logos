@@ -1,0 +1,11 @@
+# Build outputs
+dist/
+coverage/
+
+# Dependencies
+node_modules/
+
+# Config files (CJS)
+*.config.js
+*.config.cjs
+.eslintrc.cjs

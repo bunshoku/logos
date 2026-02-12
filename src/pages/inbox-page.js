@@ -1,0 +1,162 @@
+import { LitElement, html, css } from 'lit';
+import { store } from '../state/store.js';
+import { openDrawer, deleteInboxItem } from '../state/actions.js';
+import { getInboxCount } from '../state/selectors.js';
+import '../components/inbox/inbox-item.js';
+
+/**
+ * <inbox-page> - Inbox view page
+ */
+class InboxPage extends LitElement {
+  static styles = css`
+    :host {
+      display: block;
+    }
+
+    .page {
+      padding: var(--space-xl);
+    }
+
+    .page__header {
+      margin-bottom: var(--space-xl);
+    }
+
+    .page__title {
+      font-size: var(--font-size-2xl);
+      font-weight: 600;
+      color: var(--color-text);
+      margin-bottom: var(--space-sm);
+    }
+
+    .page__subtitle {
+      font-size: var(--font-size-base);
+      color: var(--color-text-secondary);
+    }
+
+    .page__content {
+      max-width: 800px;
+    }
+
+    .inbox-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .empty-state {
+      padding: var(--space-xl);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      text-align: center;
+      color: var(--color-text-secondary);
+    }
+
+    .empty-state__icon {
+      font-size: 3rem;
+      margin-bottom: var(--space-md);
+    }
+
+    .empty-state__title {
+      font-size: var(--font-size-lg);
+      font-weight: 500;
+      color: var(--color-text);
+      margin-bottom: var(--space-sm);
+    }
+
+    .empty-state__text {
+      font-size: var(--font-size-sm);
+    }
+  `;
+
+  constructor() {
+    super();
+    this._state = store.getState();
+    this._unsubscribe = null;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this._unsubscribe = store.subscribe((state) => {
+      this._state = state;
+      this.requestUpdate();
+    });
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    if (this._unsubscribe) {
+      this._unsubscribe();
+    }
+  }
+
+  _handleClarify(e) {
+    const { id } = e.detail;
+    const inboxItem = this._state.data.inbox.find((item) => item.id === id);
+
+    if (inboxItem) {
+      // Open drawer with draft defaulting to inbox text
+      store.dispatch(
+        openDrawer('inbox', id, {
+          title: inboxItem.text,
+          context: '',
+          energy: 'low',
+          dueDate: '',
+          notes: '',
+        })
+      );
+    }
+  }
+
+  _handleDelete(e) {
+    const { id } = e.detail;
+
+    if (confirm('Delete this inbox item?')) {
+      store.dispatch(deleteInboxItem(id));
+    }
+  }
+
+  render() {
+    const inboxCount = getInboxCount(this._state);
+    const inboxItems = this._state.data.inbox;
+
+    return html`
+      <div class="page">
+        <div class="page__header">
+          <h1 class="page__title">Inbox</h1>
+          <p class="page__subtitle">
+            ${inboxCount} item${inboxCount !== 1 ? 's' : ''} to clarify
+          </p>
+        </div>
+
+        <div class="page__content">
+          ${inboxItems.length === 0
+            ? html`
+                <div class="empty-state">
+                  <div class="empty-state__icon">📥</div>
+                  <div class="empty-state__title">Your inbox is empty</div>
+                  <div class="empty-state__text">
+                    Press <strong>c</strong> to capture something new
+                  </div>
+                </div>
+              `
+            : html`
+                <div class="inbox-list">
+                  ${inboxItems.map(
+                    (item) => html`
+                      <inbox-item
+                        .item=${item}
+                        @clarify=${this._handleClarify}
+                        @delete=${this._handleDelete}
+                      ></inbox-item>
+                    `
+                  )}
+                </div>
+              `}
+        </div>
+      </div>
+    `;
+  }
+}
+
+customElements.define('inbox-page', InboxPage);

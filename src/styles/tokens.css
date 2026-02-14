@@ -47,6 +47,8 @@
     --logos-muted: rgba(28, 28, 28, 0.08);
     --logos-gold: #b08a4f;
     --logos-blue: #4a5d73;
+    --logos-primary: var(--logos-blue);
+    --logos-primary-hover: #3d4f61;
 }
 
 /* Dark theme */
@@ -60,4 +62,6 @@
   --logos-muted: rgba(230, 232, 234, 0.08);
   --logos-gold: #c6a15b;
   --logos-blue: #6e8fa3;
+  --logos-primary: var(--logos-blue);
+  --logos-primary-hover: #5f7f95;
 }

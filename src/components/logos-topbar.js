@@ -168,16 +168,6 @@ class LogosTopbar extends LitElement {
             Shortcuts
           </button>
 
-          <div class="topbar__hints">
-            Capture: <strong>c</strong>
-            <span class="topbar__hint-sep">•</span>
-            Shortcuts: <span class="topbar__hint-badge">?</span>
-            <span class="topbar__hint-sep">•</span>
-            Save: <strong>Enter</strong>
-            <span class="topbar__hint-sep">•</span>
-            Close: <strong>Esc</strong>
-          </div>
-
           <button
             class="btn-theme"
             @click=${this._handleThemeToggle}

@@ -104,6 +104,7 @@ class ActionCard extends LitElement {
   constructor() {
     super();
     this.action = null;
+    this.tabIndex = 0;
   }
 
   _handleCheckboxClick(e) {

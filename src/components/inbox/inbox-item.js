@@ -181,6 +181,7 @@ class InboxItem extends LitElement {
     super();
     this.item = null;
     this.isClarifying = false;
+    this.tabIndex = 0;
     this._draft = {
       context: '',
       energy: 'low',

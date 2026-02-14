@@ -62,6 +62,8 @@ npm run format
 | `Enter` (in capture)          | Save to Inbox and navigate to Inbox  |
 | `Cmd/Ctrl+Enter` (in capture) | Alternative save shortcut            |
 | `Esc`                         | Close capture modal or drawer        |
+| `ArrowDown` / `j`             | Move to next item in Inbox/Next      |
+| `ArrowUp` / `k`               | Move to previous item in Inbox/Next  |
 
 ## Navigation
 

@@ -19,8 +19,8 @@ export function isTypingTarget(element) {
 
   const tagName = element.tagName.toLowerCase();
 
-  // Check for input or textarea
-  if (tagName === 'input' || tagName === 'textarea') {
+  // Check for standard form typing controls
+  if (tagName === 'input' || tagName === 'textarea' || tagName === 'select') {
     return true;
   }
 

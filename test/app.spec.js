@@ -6,6 +6,7 @@ import {
   setCaptureText,
   saveCapture,
   setTheme,
+  setRoute,
   clarifyInboxItem,
   toggleActionDone,
   setQuery,
@@ -21,6 +22,16 @@ import { nanoid } from 'nanoid';
 
 // Import app component
 import '../src/app.js';
+
+function getDeepActiveElement(root = document) {
+  let current = root.activeElement;
+
+  while (current?.shadowRoot?.activeElement) {
+    current = current.shadowRoot.activeElement;
+  }
+
+  return current;
+}
 
 describe('lo•gos Application Tests', () => {
   let app;
@@ -144,6 +155,135 @@ describe('lo•gos Application Tests', () => {
       expect(wasNotCanceled).toBe(true);
       expect(event.defaultPrevented).toBe(false);
       expect(store.getState().ui.captureOpen).toBe(true);
+    });
+  });
+
+  describe('Test 2b: Arrow/jk list navigation', () => {
+    it('should navigate next actions with ArrowDown, ArrowUp, j, and k', async () => {
+      const actionOne = {
+        id: nanoid(),
+        text: 'First action',
+        done: false,
+        createdAt: Date.now(),
+      };
+      const actionTwo = {
+        id: nanoid(),
+        text: 'Second action',
+        done: false,
+        createdAt: Date.now() - 1000,
+      };
+
+      store.dispatch(clarifyInboxItem('dummy-1', actionOne));
+      store.dispatch(clarifyInboxItem('dummy-2', actionTwo));
+
+      await app.updateComplete;
+      const page = app.shadowRoot.querySelector('next-actions-page');
+      await page.updateComplete;
+
+      const cards = Array.from(page.shadowRoot.querySelectorAll('action-card'));
+      expect(cards.length).toBe(2);
+
+      fireKeyboardEvent(document.body, 'ArrowDown');
+      await new Promise((resolve) => setTimeout(resolve, 25));
+      expect(getDeepActiveElement(document)).toBe(cards[0]);
+
+      fireKeyboardEvent(document.body, 'ArrowDown');
+      await new Promise((resolve) => setTimeout(resolve, 25));
+      expect(getDeepActiveElement(document)).toBe(cards[1]);
+
+      fireKeyboardEvent(document.body, 'ArrowUp');
+      await new Promise((resolve) => setTimeout(resolve, 25));
+      expect(getDeepActiveElement(document)).toBe(cards[0]);
+
+      fireKeyboardEvent(document.body, 'j');
+      await new Promise((resolve) => setTimeout(resolve, 25));
+      expect(getDeepActiveElement(document)).toBe(cards[1]);
+
+      fireKeyboardEvent(document.body, 'k');
+      await new Promise((resolve) => setTimeout(resolve, 25));
+      expect(getDeepActiveElement(document)).toBe(cards[0]);
+    });
+
+    it('should not navigate list when focused in a select field', async () => {
+      const actionOne = {
+        id: nanoid(),
+        text: 'Action one',
+        done: false,
+        createdAt: Date.now(),
+      };
+      const actionTwo = {
+        id: nanoid(),
+        text: 'Action two',
+        done: false,
+        createdAt: Date.now() - 1000,
+      };
+
+      store.dispatch(clarifyInboxItem('dummy-1', actionOne));
+      store.dispatch(clarifyInboxItem('dummy-2', actionTwo));
+
+      await app.updateComplete;
+
+      const select = document.createElement('select');
+      select.innerHTML = '<option value="one">One</option><option value="two">Two</option>';
+      document.body.appendChild(select);
+      select.focus();
+
+      fireKeyboardEvent(select, 'ArrowDown');
+      await new Promise((resolve) => setTimeout(resolve, 25));
+      expect(getDeepActiveElement(document)).toBe(select);
+
+      fireKeyboardEvent(select, 'j');
+      await new Promise((resolve) => setTimeout(resolve, 25));
+      expect(getDeepActiveElement(document)).toBe(select);
+
+      fireKeyboardEvent(select, 'k');
+      await new Promise((resolve) => setTimeout(resolve, 25));
+      expect(getDeepActiveElement(document)).toBe(select);
+
+      document.body.removeChild(select);
+    });
+  });
+
+  describe('Test 2c: Sidebar number shortcuts', () => {
+    it('should select sidebar items with keys 1 through 6', async () => {
+      const sidebar = app.shadowRoot.querySelector('logos-sidebar');
+      expect(sidebar).toBeTruthy();
+
+      const expectations = [
+        { key: '1', route: 'next-actions', label: 'Next Actions' },
+        { key: '2', route: 'inbox', label: 'Inbox' },
+        { key: '3', route: 'notes', label: 'Notes' },
+        { key: '4', route: 'review', label: 'Review' },
+        { key: '5', route: 'habits', label: 'Habits' },
+        { key: '6', route: 'settings', label: 'Settings' },
+      ];
+
+      for (const item of expectations) {
+        fireKeyboardEvent(document.body, item.key);
+        await new Promise((resolve) => setTimeout(resolve, 50));
+
+        expect(store.getState().ui.route).toBe(item.route);
+
+        const activeItem = sidebar.shadowRoot.querySelector('.nav-item--active span');
+        expect(activeItem).toBeTruthy();
+        expect(activeItem.textContent.trim()).toBe(item.label);
+      }
+    });
+
+    it('should not trigger sidebar shortcuts when typing in an input', async () => {
+      store.dispatch(setRoute('next-actions'));
+      await app.updateComplete;
+
+      const input = document.createElement('input');
+      document.body.appendChild(input);
+      input.focus();
+
+      fireKeyboardEvent(input, '2');
+      await new Promise((resolve) => setTimeout(resolve, 50));
+
+      expect(store.getState().ui.route).toBe('next-actions');
+
+      document.body.removeChild(input);
     });
   });
 

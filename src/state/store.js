@@ -59,7 +59,7 @@ const initialState = {
     captureOpen: false,
     captureText: '',
     drawerOpen: false,
-    drawerKind: 'detail',
+    drawerKind: 'action',
     drawerSelectedId: '',
     drawerDraft: {},
   },

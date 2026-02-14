@@ -1,7 +1,8 @@
 import { LitElement, html, css } from 'lit';
 import { store } from '../state/store.js';
-import { openDrawer, deleteInboxItem } from '../state/actions.js';
+import { deleteInboxItem, clarifyInboxItem } from '../state/actions.js';
 import { getInboxCount } from '../state/selectors.js';
+import { nanoid } from 'nanoid';
 import '../components/inbox/inbox-item.js';
 
 /**
@@ -90,21 +91,33 @@ class InboxPage extends LitElement {
     }
   }
 
-  _handleClarify(e) {
-    const { id } = e.detail;
+  _handleClarifySave(e) {
+    const { id, context, energy, dueDate, notes } = e.detail;
     const inboxItem = this._state.data.inbox.find((item) => item.id === id);
 
-    if (inboxItem) {
-      // Open drawer with draft defaulting to inbox text
-      store.dispatch(
-        openDrawer('inbox', id, {
-          title: inboxItem.text,
-          context: '',
-          energy: 'low',
-          dueDate: '',
-          notes: '',
-        })
-      );
+    if (!inboxItem) {
+      return;
+    }
+
+    const actionData = {
+      id: nanoid(),
+      text: inboxItem.text,
+      done: false,
+      createdAt: Date.now(),
+      context: context || '',
+      energy: energy || 'low',
+      notes: notes || '',
+    };
+
+    if (dueDate) {
+      actionData.dueDate = new Date(dueDate).getTime();
+    }
+
+    store.dispatch(clarifyInboxItem(id, actionData));
+
+    const app = document.querySelector('logos-app');
+    if (app && app._router) {
+      app._router.goto('/next');
     }
   }
 
@@ -146,7 +159,7 @@ class InboxPage extends LitElement {
                     (item) => html`
                       <inbox-item
                         .item=${item}
-                        @clarify=${this._handleClarify}
+                        @clarify-save=${this._handleClarifySave}
                         @delete=${this._handleDelete}
                       ></inbox-item>
                     `

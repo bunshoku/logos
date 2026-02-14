@@ -32,7 +32,7 @@ export const StateSchema = z.object({
     captureOpen: z.boolean(),
     captureText: z.string(),
     drawerOpen: z.boolean(),
-    drawerKind: z.enum(['detail', 'edit', 'clarify']),
+    drawerKind: z.enum(['action']),
     drawerSelectedId: z.string(),
     drawerDraft: z.record(z.any()),
   }),

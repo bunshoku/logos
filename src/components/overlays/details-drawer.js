@@ -1,17 +1,11 @@
 import { LitElement, html, css } from 'lit';
 import { store } from '../../state/store.js';
-import {
-  closeDrawer,
-  setDrawerDraft,
-  clarifyInboxItem,
-  updateAction,
-} from '../../state/actions.js';
-import { getInboxItemById, getActionById } from '../../state/selectors.js';
-import { nanoid } from 'nanoid';
+import { closeDrawer, setDrawerDraft, updateAction } from '../../state/actions.js';
+import { getActionById } from '../../state/selectors.js';
 
 /**
- * <details-drawer> - Side drawer for clarifying inbox items or viewing action details
- * Supports drawerKind: "inbox" | "action"
+ * <details-drawer> - Side drawer for viewing/editing action details
+ * Supports drawerKind: "action"
  */
 class DetailsDrawer extends LitElement {
   static properties = {
@@ -198,29 +192,12 @@ class DetailsDrawer extends LitElement {
       border-color: var(--logos-primary);
     }
 
-    .source-text {
-      padding: var(--space-md);
-      background-color: var(--logos-surface);
-      border: 1px solid var(--logos-border);
-      border-radius: var(--radius-md);
-      color: var(--logos-text-secondary);
-      font-size: var(--font-size-sm);
-      margin-bottom: var(--space-lg);
-      line-height: 1.5;
-    }
-
-    .source-text__label {
-      font-weight: 500;
-        color: var(--logos-text);
-      display: block;
-      margin-bottom: var(--space-xs);
-    }
   `;
 
   constructor() {
     super();
     this.isOpen = false;
-    this.kind = 'inbox';
+    this.kind = 'action';
     this.selectedId = '';
     this.draft = {};
     this._unsubscribe = null;
@@ -258,51 +235,7 @@ class DetailsDrawer extends LitElement {
   }
 
   _handleSave() {
-    if (this.kind === 'inbox') {
-      this._handleClarifySave();
-    } else if (this.kind === 'action') {
-      this._handleActionSave();
-    }
-  }
-
-  _handleClarifySave() {
-    const state = store.getState();
-    const inboxItem = getInboxItemById(state, this.selectedId);
-
-    if (!inboxItem) {
-      return;
-    }
-
-    const title = (this.draft.title || '').trim();
-    if (!title) {
-      alert('Title is required');
-      return;
-    }
-
-    // Create new action from clarified inbox item
-    const actionData = {
-      id: nanoid(),
-      text: title,
-      done: false,
-      createdAt: Date.now(),
-      context: this.draft.context || '',
-      energy: this.draft.energy || '',
-      notes: this.draft.notes || '',
-    };
-
-    // Add due date if provided
-    if (this.draft.dueDate) {
-      actionData.dueDate = new Date(this.draft.dueDate).getTime();
-    }
-
-    // Dispatch clarify action (removes inbox item, adds action)
-    store.dispatch(clarifyInboxItem(this.selectedId, actionData));
-
-    // Navigate to Next Actions
-    const app = document.querySelector('logos-app');
-    if (app && app._router) {
-      app._router.goto('/next');
-    }
+    this._handleActionSave();
   }
 
   _handleActionSave() {
@@ -424,98 +357,13 @@ class DetailsDrawer extends LitElement {
     `;
   }
 
-  _renderInboxClarifyForm() {
-    const state = store.getState();
-    const inboxItem = getInboxItemById(state, this.selectedId);
-
-    if (!inboxItem) {
-      return html`<p>Inbox item not found</p>`;
-    }
-
-    const title = this.draft.title ?? inboxItem.text;
-    const context = this.draft.context ?? '';
-    const energy = this.draft.energy ?? 'low';
-    const dueDate = this.draft.dueDate ?? '';
-    const notes = this.draft.notes ?? '';
-
-    return html`
-      <div class="source-text">
-        <span class="source-text__label">Original capture:</span>
-        ${inboxItem.text}
-      </div>
-
-      <div class="form-field">
-        <label class="form-field__label">
-          Title <span class="form-field__required">*</span>
-        </label>
-        <input
-          type="text"
-          class="form-field__input"
-          .value=${title}
-          @input=${(e) => this._handleInputChange('title', e.target.value)}
-          placeholder="What needs to be done?"
-        />
-      </div>
-
-      <div class="form-field">
-        <label class="form-field__label">Context</label>
-        <select
-          class="form-field__select"
-          .value=${context}
-          @change=${(e) => this._handleInputChange('context', e.target.value)}
-        >
-          <option value="">None</option>
-          <option value="work">Work</option>
-          <option value="home">Home</option>
-          <option value="personal">Personal</option>
-          <option value="errands">Errands</option>
-          <option value="online">Online</option>
-        </select>
-      </div>
-
-      <div class="form-field">
-        <label class="form-field__label">Energy Level</label>
-        <select
-          class="form-field__select"
-          .value=${energy}
-          @change=${(e) => this._handleInputChange('energy', e.target.value)}
-        >
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
-        </select>
-      </div>
-
-      <div class="form-field">
-        <label class="form-field__label">Due Date</label>
-        <input
-          type="date"
-          class="form-field__input"
-          .value=${dueDate}
-          @input=${(e) => this._handleInputChange('dueDate', e.target.value)}
-        />
-      </div>
-
-      <div class="form-field">
-        <label class="form-field__label">Notes</label>
-        <textarea
-          class="form-field__textarea"
-          .value=${notes}
-          @input=${(e) => this._handleInputChange('notes', e.target.value)}
-          placeholder="Additional details..."
-        ></textarea>
-      </div>
-    `;
-  }
-
   render() {
     if (!this.isOpen) {
       return html``;
     }
 
-    const title =
-      this.kind === 'inbox' ? 'Clarify to Next Action' : 'Action Details';
-    const saveLabel = this.kind === 'inbox' ? 'Create Next Action' : 'Save';
+    const title = 'Action Details';
+    const saveLabel = 'Save';
 
     return html`
       <div class="drawer-backdrop" @click=${this._handleBackdropClick}></div>
@@ -526,7 +374,7 @@ class DetailsDrawer extends LitElement {
         </div>
 
         <div class="drawer__content">
-          ${this.kind === 'inbox' ? this._renderInboxClarifyForm() : ''}
+          ${this._renderActionEditForm()}
         </div>
 
         <div class="drawer__footer">

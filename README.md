@@ -206,7 +206,7 @@ Modern browsers with Web Components support:
 
 ## License
 
-Private project - All rights reserved
+MIT - See [LICENSE](LICENSE)
 
 ## Contributing
 

@@ -35,6 +35,7 @@ export const StateSchema = z.object({
     drawerKind: z.enum(['action']),
     drawerSelectedId: z.string(),
     drawerDraft: z.record(z.any()),
+    shortcutsOpen: z.boolean(),
   }),
   data: z.object({
     inbox: z.array(InboxItemSchema),

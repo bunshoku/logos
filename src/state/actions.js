@@ -16,6 +16,9 @@ export const SAVE_CAPTURE = 'SAVE_CAPTURE';
 export const OPEN_DRAWER = 'OPEN_DRAWER';
 export const CLOSE_DRAWER = 'CLOSE_DRAWER';
 export const SET_DRAWER_DRAFT = 'SET_DRAWER_DRAFT';
+export const OPEN_SHORTCUTS = 'OPEN_SHORTCUTS';
+export const CLOSE_SHORTCUTS = 'CLOSE_SHORTCUTS';
+export const TOGGLE_SHORTCUTS = 'TOGGLE_SHORTCUTS';
 
 // Data Actions
 export const ADD_ACTION = 'ADD_ACTION';
@@ -57,6 +60,9 @@ export const setDrawerDraft = (updates) => ({
   type: SET_DRAWER_DRAFT,
   payload: updates,
 });
+export const openShortcuts = () => ({ type: OPEN_SHORTCUTS });
+export const closeShortcuts = () => ({ type: CLOSE_SHORTCUTS });
+export const toggleShortcuts = () => ({ type: TOGGLE_SHORTCUTS });
 
 // Action Creators - Data
 export const addAction = (actionData) => ({

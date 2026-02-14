@@ -7,6 +7,7 @@ import './components/logos-sidebar.js';
 import './components/logos-topbar.js';
 import './components/overlays/capture-modal.js';
 import './components/overlays/details-drawer.js';
+import './components/overlays/shortcuts-modal.js';
 import './pages/next-actions-page.js';
 import './pages/inbox-page.js';
 import './pages/placeholder-page.js';
@@ -161,6 +162,7 @@ class LogosApp extends LitElement {
 
         <capture-modal></capture-modal>
         <details-drawer></details-drawer>
+        <shortcuts-modal></shortcuts-modal>
       </div>
     `;
   }

@@ -52,6 +52,7 @@ describe('lo•gos Application Tests', () => {
         drawerKind: 'action',
         drawerSelectedId: '',
         drawerDraft: {},
+        shortcutsOpen: false,
       },
       data: {
         inbox: [],
@@ -284,6 +285,36 @@ describe('lo•gos Application Tests', () => {
       expect(store.getState().ui.route).toBe('next-actions');
 
       document.body.removeChild(input);
+    });
+  });
+
+  describe('Test 2d: Keyboard shortcuts modal', () => {
+    it('should toggle shortcuts modal with "?" key', async () => {
+      expect(store.getState().ui.shortcutsOpen).toBe(false);
+
+      fireKeyboardEvent(document.body, '?');
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      expect(store.getState().ui.shortcutsOpen).toBe(true);
+
+      fireKeyboardEvent(document.body, '?');
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      expect(store.getState().ui.shortcutsOpen).toBe(false);
+    });
+
+    it('should toggle shortcuts modal from topbar button', async () => {
+      const topbar = app.shadowRoot.querySelector('logos-topbar');
+      expect(topbar).toBeTruthy();
+
+      const button = topbar.shadowRoot.querySelector('.btn-shortcuts');
+      expect(button).toBeTruthy();
+
+      button.click();
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      expect(store.getState().ui.shortcutsOpen).toBe(true);
+
+      button.click();
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      expect(store.getState().ui.shortcutsOpen).toBe(false);
     });
   });
 

@@ -62,6 +62,7 @@ const initialState = {
     drawerKind: 'action',
     drawerSelectedId: '',
     drawerDraft: {},
+    shortcutsOpen: false,
   },
   data: {
     inbox: [...INBOX_SEED],

@@ -1,6 +1,13 @@
 import { isTypingEvent } from './dom.js';
 import { store } from '../state/store.js';
-import { openCapture, closeCapture, closeDrawer, setRoute } from '../state/actions.js';
+import {
+  openCapture,
+  closeCapture,
+  closeDrawer,
+  closeShortcuts,
+  setRoute,
+  toggleShortcuts,
+} from '../state/actions.js';
 
 const SIDEBAR_SHORTCUTS = [
   { key: '1', route: 'next-actions', path: '/next' },
@@ -188,10 +195,27 @@ export function setupGlobalHotkeys(router) {
         store.dispatch(closeDrawer());
         return;
       }
+
+      // Close shortcuts modal if open
+      if (state.ui.shortcutsOpen) {
+        e.preventDefault();
+        store.dispatch(closeShortcuts());
+      }
     },
     { ignoreTyping: false } // Allow Escape even when typing
   );
   cleanups.push(escapeCleanup);
+
+  // "?" - Toggle keyboard shortcuts modal
+  const shortcutsCleanup = registerHotkey(
+    '?',
+    (e) => {
+      e.preventDefault();
+      store.dispatch(toggleShortcuts());
+    },
+    { ignoreTyping: true }
+  );
+  cleanups.push(shortcutsCleanup);
 
   // ArrowDown - Move focus to next visible item in Inbox/Next Actions
   const arrowDownCleanup = registerHotkey(

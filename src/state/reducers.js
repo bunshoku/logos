@@ -12,6 +12,9 @@ import {
   OPEN_DRAWER,
   CLOSE_DRAWER,
   SET_DRAWER_DRAFT,
+  OPEN_SHORTCUTS,
+  CLOSE_SHORTCUTS,
+  TOGGLE_SHORTCUTS,
   ADD_ACTION,
   UPDATE_ACTION,
   DELETE_ACTION,
@@ -78,6 +81,15 @@ function uiReducer(state, action) {
         ...state,
         drawerDraft: { ...state.drawerDraft, ...action.payload },
       };
+
+    case OPEN_SHORTCUTS:
+      return { ...state, shortcutsOpen: true };
+
+    case CLOSE_SHORTCUTS:
+      return { ...state, shortcutsOpen: false };
+
+    case TOGGLE_SHORTCUTS:
+      return { ...state, shortcutsOpen: !state.shortcutsOpen };
 
     case DELETE_INBOX_ITEM:
       // Close drawer if it was open for the deleted item

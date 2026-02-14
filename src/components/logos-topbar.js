@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { store } from '../state/store.js';
-import { openCapture } from '../state/actions.js';
+import { openCapture, toggleShortcuts } from '../state/actions.js';
 
 /**
  * <logos-topbar> - Top bar with theme toggle, capture button, and hints
@@ -40,6 +40,21 @@ class LogosTopbar extends LitElement {
       margin: 0 var(--space-xs);
     }
 
+    .topbar__hint-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      border: 1px solid var(--logos-border);
+      background-color: var(--logos-surface);
+      font-size: var(--font-size-xs);
+      font-weight: 700;
+      line-height: 1;
+      vertical-align: middle;
+    }
+
     .btn-capture {
       padding: var(--space-sm) var(--space-md);
       background-color: var(--logos-surface);
@@ -59,6 +74,40 @@ class LogosTopbar extends LitElement {
       background-color: var(--logos-surface-2);
       border-color: var(--logos-gold);
       color: var(--logos-gold);
+    }
+
+    .btn-shortcuts {
+      padding: var(--space-sm) var(--space-md);
+      background-color: var(--logos-surface);
+      color: var(--logos-text);
+      border: 1px solid var(--logos-border);
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: var(--font-size-sm);
+      cursor: pointer;
+      transition:
+        background-color var(--transition-fast),
+        border-color var(--transition-fast);
+    }
+
+    .btn-shortcuts:hover {
+      background-color: var(--logos-surface-2);
+      border-color: var(--logos-primary);
+    }
+
+    .btn-shortcuts__icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      margin-right: var(--space-xs);
+      border-radius: 999px;
+      border: 1px solid var(--logos-border);
+      background-color: var(--logos-bg);
+      font-size: var(--font-size-xs);
+      line-height: 1;
+      font-weight: 700;
     }
 
     .btn-theme {
@@ -91,6 +140,10 @@ class LogosTopbar extends LitElement {
     store.dispatch(openCapture());
   }
 
+  _handleShortcutsClick() {
+    store.dispatch(toggleShortcuts());
+  }
+
   _handleThemeToggle() {
     this.dispatchEvent(
       new CustomEvent('theme-toggle', {
@@ -110,8 +163,15 @@ class LogosTopbar extends LitElement {
             + Capture
           </button>
 
+          <button class="btn-shortcuts" @click=${this._handleShortcutsClick}>
+            <span class="btn-shortcuts__icon" aria-hidden="true">?</span>
+            Shortcuts
+          </button>
+
           <div class="topbar__hints">
             Capture: <strong>c</strong>
+            <span class="topbar__hint-sep">•</span>
+            Shortcuts: <span class="topbar__hint-badge">?</span>
             <span class="topbar__hint-sep">•</span>
             Save: <strong>Enter</strong>
             <span class="topbar__hint-sep">•</span>

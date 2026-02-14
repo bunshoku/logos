@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit';
+import logosDesignUrl from '../public/logos_design.png';
 
 /**
  * <logos-mark> - The lo•gos brand mark
@@ -6,25 +7,36 @@ import { LitElement, html, css } from 'lit';
 class LogosMark extends LitElement {
   static styles = css`
     :host {
-      display: inline-block;
+      display: block;
+      width: 100%;
     }
 
     .mark {
-      font-size: var(--font-size-xl);
-      font-weight: 600;
-      color: var(--logos-text);
-      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: var(--space-md) 0 var(--space-md);
     }
 
-    .mark__dot {
-      color: var(--logos-primary);
-      font-weight: 400;
+    .mark__image {
+      display: block;
+      width: min(240px, 100%);
+      max-width: 100%;
+      height: auto;
+      object-fit: contain;
     }
   `;
 
   render() {
     return html`
-      <div class="mark">lo<span class="mark__dot">•</span>gos</div>
+      <div class="mark">
+        <img
+          class="mark__image"
+          src=${logosDesignUrl}
+          alt="lo•gos"
+          draggable="false"
+        />
+      </div>
     `;
   }
 }

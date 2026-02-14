@@ -79,20 +79,22 @@ class LogosTopbar extends LitElement {
     .btn-shortcuts {
       padding: var(--space-sm) var(--space-md);
       background-color: var(--logos-surface);
-      color: var(--logos-text);
-      border: 1px solid var(--logos-border);
+      color: var(--logos-blue);
+      border: 1px solid var(--logos-blue);
       border-radius: var(--radius-md);
       font-weight: 600;
       font-size: var(--font-size-sm);
       cursor: pointer;
       transition:
         background-color var(--transition-fast),
-        border-color var(--transition-fast);
+        border-color var(--transition-fast),
+        color var(--transition-fast);
     }
 
     .btn-shortcuts:hover {
       background-color: var(--logos-surface-2);
-      border-color: var(--logos-primary);
+      border-color: var(--logos-gold);
+      color: var(--logos-gold);
     }
 
     .btn-shortcuts__icon {
@@ -103,11 +105,20 @@ class LogosTopbar extends LitElement {
       height: 18px;
       margin-right: var(--space-xs);
       border-radius: 999px;
-      border: 1px solid var(--logos-border);
+      border: 1px solid currentColor;
       background-color: var(--logos-bg);
+      color: currentColor;
       font-size: var(--font-size-xs);
       line-height: 1;
       font-weight: 700;
+      transition:
+        background-color var(--transition-fast),
+        border-color var(--transition-fast),
+        color var(--transition-fast);
+    }
+
+    .btn-shortcuts:hover .btn-shortcuts__icon {
+      background-color: var(--logos-surface-2);
     }
 
     .btn-theme {

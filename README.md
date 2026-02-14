@@ -64,6 +64,10 @@ npm run format
 | `Esc`                         | Close capture modal or drawer        |
 | `ArrowDown` / `j`             | Move to next item in Inbox/Next      |
 | `ArrowUp` / `k`               | Move to previous item in Inbox/Next  |
+| `e` (in Inbox)                | Expand clarify on selected item      |
+| `n` (in Inbox)                | Create next action for selected item |
+| `h` (in Inbox)                | Hide/cancel clarify on selected item |
+| `d` (in Inbox)                | Delete selected item                 |
 | `?`                           | Toggle keyboard shortcuts modal       |
 
 ## Navigation

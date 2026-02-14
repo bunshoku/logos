@@ -56,6 +56,58 @@ function getNavigableItems() {
   return [];
 }
 
+function getSelectedInboxItem() {
+  const state = store.getState();
+  if (state.ui.route !== 'inbox') {
+    return null;
+  }
+
+  const items = getNavigableItems();
+  if (items.length === 0) {
+    return null;
+  }
+
+  const activeElement = getDeepActiveElement(document);
+  return (
+    items.find((item) => item === activeElement || item.shadowRoot?.contains(activeElement)) || null
+  );
+}
+
+function triggerInboxShortcutAction(action) {
+  const state = store.getState();
+
+  if (state.ui.captureOpen || state.ui.drawerOpen || state.ui.shortcutsOpen) {
+    return false;
+  }
+
+  const selectedItem = getSelectedInboxItem();
+  if (!selectedItem) {
+    return false;
+  }
+
+  if (action === 'expand') {
+    selectedItem.expandClarify?.();
+    return true;
+  }
+
+  if (action === 'create') {
+    selectedItem.createNextAction?.();
+    return true;
+  }
+
+  if (action === 'hide') {
+    selectedItem.hideClarify?.();
+    return true;
+  }
+
+  if (action === 'delete') {
+    selectedItem.deleteItem?.();
+    return true;
+  }
+
+  return false;
+}
+
 function moveItemFocus(direction) {
   const state = store.getState();
 
@@ -268,6 +320,58 @@ export function setupGlobalHotkeys(router) {
     { ignoreTyping: true }
   );
   cleanups.push(kCleanup);
+
+  // "e" - Expand clarify panel for selected Inbox item
+  const inboxExpandCleanup = registerHotkey(
+    'e',
+    (e) => {
+      const didHandle = triggerInboxShortcutAction('expand');
+      if (didHandle) {
+        e.preventDefault();
+      }
+    },
+    { ignoreTyping: true }
+  );
+  cleanups.push(inboxExpandCleanup);
+
+  // "n" - Create next action from selected clarified Inbox item
+  const inboxCreateCleanup = registerHotkey(
+    'n',
+    (e) => {
+      const didHandle = triggerInboxShortcutAction('create');
+      if (didHandle) {
+        e.preventDefault();
+      }
+    },
+    { ignoreTyping: true }
+  );
+  cleanups.push(inboxCreateCleanup);
+
+  // "h" - Hide/cancel clarify panel for selected Inbox item
+  const inboxHideCleanup = registerHotkey(
+    'h',
+    (e) => {
+      const didHandle = triggerInboxShortcutAction('hide');
+      if (didHandle) {
+        e.preventDefault();
+      }
+    },
+    { ignoreTyping: true }
+  );
+  cleanups.push(inboxHideCleanup);
+
+  // "d" - Delete selected Inbox item
+  const inboxDeleteCleanup = registerHotkey(
+    'd',
+    (e) => {
+      const didHandle = triggerInboxShortcutAction('delete');
+      if (didHandle) {
+        e.preventDefault();
+      }
+    },
+    { ignoreTyping: true }
+  );
+  cleanups.push(inboxDeleteCleanup);
 
   SIDEBAR_SHORTCUTS.forEach(({ key, route, path }) => {
     const sidebarCleanup = registerHotkey(

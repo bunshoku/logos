@@ -318,6 +318,67 @@ describe('lo•gos Application Tests', () => {
     });
   });
 
+  describe('Test 2e: Inbox selected-item shortcuts', () => {
+    it('should expand, hide, and create next action for selected inbox item', async () => {
+      store.dispatch(setRoute('inbox'));
+      store.dispatch(saveCapture(nanoid(), 'Inbox shortcut item', Date.now()));
+
+      await app.updateComplete;
+      await new Promise((resolve) => setTimeout(resolve, 50));
+
+      const inboxPage = app.shadowRoot.querySelector('inbox-page');
+      expect(inboxPage).toBeTruthy();
+      await inboxPage.updateComplete;
+
+      fireKeyboardEvent(document.body, 'ArrowDown');
+      await new Promise((resolve) => setTimeout(resolve, 25));
+
+      const item = inboxPage.shadowRoot.querySelector('inbox-item');
+      expect(item).toBeTruthy();
+      expect(item.isClarifying).toBe(false);
+
+      fireKeyboardEvent(document.body, 'e');
+      await new Promise((resolve) => setTimeout(resolve, 25));
+      expect(item.isClarifying).toBe(true);
+
+      fireKeyboardEvent(document.body, 'h');
+      await new Promise((resolve) => setTimeout(resolve, 25));
+      expect(item.isClarifying).toBe(false);
+
+      fireKeyboardEvent(document.body, 'e');
+      await new Promise((resolve) => setTimeout(resolve, 25));
+      expect(item.isClarifying).toBe(true);
+
+      fireKeyboardEvent(document.body, 'n');
+      await new Promise((resolve) => setTimeout(resolve, 75));
+
+      const state = store.getState();
+      expect(state.data.inbox.length).toBe(0);
+      expect(state.data.actions.length).toBe(1);
+    });
+
+    it('should delete selected inbox item with "d" shortcut', async () => {
+      const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(true);
+
+      store.dispatch(setRoute('inbox'));
+      store.dispatch(saveCapture(nanoid(), 'Delete me', Date.now()));
+
+      await app.updateComplete;
+      await new Promise((resolve) => setTimeout(resolve, 50));
+
+      fireKeyboardEvent(document.body, 'ArrowDown');
+      await new Promise((resolve) => setTimeout(resolve, 25));
+
+      fireKeyboardEvent(document.body, 'd');
+      await new Promise((resolve) => setTimeout(resolve, 25));
+
+      expect(store.getState().data.inbox.length).toBe(0);
+      expect(confirmSpy).toHaveBeenCalled();
+
+      confirmSpy.mockRestore();
+    });
+  });
+
   describe('Test 3: Enter in capture saves Inbox item and navigates to Inbox', () => {
     it('should save capture to inbox and navigate', async () => {
       // Get initial inbox count

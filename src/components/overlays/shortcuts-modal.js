@@ -9,6 +9,10 @@ const SHORTCUTS = [
   { key: 'Esc', action: 'Close open overlay (capture, details, or shortcuts)' },
   { key: 'ArrowDown / j', action: 'Move focus to next item in Inbox/Next Actions' },
   { key: 'ArrowUp / k', action: 'Move focus to previous item in Inbox/Next Actions' },
+  { key: 'e', action: 'Expand clarify panel for selected Inbox item' },
+  { key: 'n', action: 'Create next action from selected Inbox item' },
+  { key: 'h', action: 'Cancel/hide clarify panel for selected Inbox item' },
+  { key: 'd', action: 'Delete selected Inbox item' },
   { key: '1–6', action: 'Navigate to sidebar sections' },
   { key: '?', action: 'Toggle keyboard shortcuts help' },
 ];

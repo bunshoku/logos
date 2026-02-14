@@ -203,6 +203,34 @@ class InboxItem extends LitElement {
     }
   }
 
+  expandClarify() {
+    if (this.isClarifying) {
+      return;
+    }
+
+    this._handleClarify();
+  }
+
+  createNextAction() {
+    if (!this.isClarifying) {
+      return;
+    }
+
+    this._handleClarifySave();
+  }
+
+  hideClarify() {
+    if (!this.isClarifying) {
+      return;
+    }
+
+    this._handleClarifyCancel();
+  }
+
+  deleteItem() {
+    this._handleDelete();
+  }
+
   _handleDelete() {
     this.dispatchEvent(
       new CustomEvent('delete', {

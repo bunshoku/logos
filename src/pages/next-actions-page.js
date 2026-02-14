@@ -28,13 +28,13 @@ class NextActionsPage extends LitElement {
     .page__title {
       font-size: var(--font-size-2xl);
       font-weight: 600;
-      color: var(--color-text);
+      color: var(--logos-text);
       margin-bottom: var(--space-sm);
     }
 
     .page__subtitle {
       font-size: var(--font-size-base);
-      color: var(--color-text-secondary);
+        color: var(--logos-text-secondary);
     }
 
     .page__content {
@@ -49,11 +49,11 @@ class NextActionsPage extends LitElement {
 
     .empty-state {
       padding: var(--space-xl);
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
+      background: var(--logos-surface);
+      border: 1px solid var(--logos-border);
       border-radius: var(--radius-lg);
       text-align: center;
-      color: var(--color-text-secondary);
+      color: var(--logos-text-secondary);
     }
 
     .empty-state__icon {
@@ -64,7 +64,7 @@ class NextActionsPage extends LitElement {
     .empty-state__title {
       font-size: var(--font-size-lg);
       font-weight: 500;
-      color: var(--color-text);
+      color: var(--logos-text);
       margin-bottom: var(--space-sm);
     }
 
@@ -134,7 +134,7 @@ class NextActionsPage extends LitElement {
           <p class="page__subtitle">
             ${activeCount} active action${activeCount !== 1 ? 's' : ''}
             ${hasFilters || !this._state.ui.showDone
-              ? html`<span style="color: var(--color-text-secondary);">
+              ? html`<span style="color: var(--logos-text-secondary);">
                   • Showing ${filteredActions.length}
                 </span>`
               : ''}

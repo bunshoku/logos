@@ -28,8 +28,8 @@ class FiltersBar extends LitElement {
       flex-direction: column;
       gap: var(--space-md);
       padding: var(--space-md);
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
+      background: var(--logos-surface);
+      border: 1px solid var(--logos-border);
       border-radius: var(--radius-lg);
       margin-bottom: var(--space-lg);
     }
@@ -42,42 +42,54 @@ class FiltersBar extends LitElement {
     }
 
     .filters-bar__search {
-      flex: 1;
-      min-width: 200px;
+      flex: 1 1 260px;
+      min-width: 0;
     }
 
     .filters-bar__search-input {
       width: 100%;
+      box-sizing: border-box;
       padding: var(--space-sm) var(--space-md);
-      background-color: var(--color-bg);
-      color: var(--color-text);
-      border: 1px solid var(--color-border);
+      background-color: var(--logos-bg);
+      color: var(--logos-text);
+      border: 1px solid var(--logos-border);
       border-radius: var(--radius-md);
       font-size: var(--font-size-sm);
       outline: none;
     }
 
     .filters-bar__search-input:focus {
-      border-color: var(--color-primary);
+      border-color: var(--logos-primary);
     }
 
     .filters-bar__filter-group {
       display: flex;
       gap: var(--space-sm);
       align-items: center;
+      flex: 0 0 auto;
+    }
+
+    @media (max-width: 720px) {
+      .filters-bar__row {
+        align-items: stretch;
+      }
+
+      .filters-bar__search {
+        flex-basis: 100%;
+      }
     }
 
     .filters-bar__label {
       font-size: var(--font-size-sm);
-      color: var(--color-text-secondary);
+      color: var(--logos-text-secondary);
       font-weight: 500;
     }
 
     .filters-bar__select {
       padding: var(--space-xs) var(--space-sm);
-      background-color: var(--color-bg);
-      color: var(--color-text);
-      border: 1px solid var(--color-border);
+      background-color: var(--logos-bg);
+      color: var(--logos-text);
+      border: 1px solid var(--logos-border);
       border-radius: var(--radius-md);
       font-size: var(--font-size-sm);
       outline: none;
@@ -85,35 +97,37 @@ class FiltersBar extends LitElement {
     }
 
     .filters-bar__select:focus {
-      border-color: var(--color-primary);
+      border-color: var(--logos-primary);
     }
 
-    .filters-bar__checkbox-wrapper {
-      display: flex;
-      align-items: center;
-      gap: var(--space-xs);
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .filters-bar__checkbox {
-      width: 18px;
-      height: 18px;
-      cursor: pointer;
-      accent-color: var(--color-primary);
-    }
-
-    .filters-bar__checkbox-label {
+    .filters-bar__toggle {
+      padding: var(--space-xs) var(--space-sm);
+      background: none;
+      color: var(--logos-text-secondary);
+      border: 1px solid var(--logos-border);
+      border-radius: var(--radius-md);
       font-size: var(--font-size-sm);
-      color: var(--color-text);
       cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .filters-bar__toggle:hover {
+      background-color: var(--logos-bg);
+      color: var(--logos-text);
+      border-color: var(--logos-primary);
+    }
+
+    .filters-bar__toggle--active {
+      background-color: var(--logos-surface);
+      color: var(--logos-text);
+      border-color: var(--logos-primary);
     }
 
     .filters-bar__clear {
       padding: var(--space-xs) var(--space-sm);
       background: none;
-      color: var(--color-text-secondary);
-      border: 1px solid var(--color-border);
+      color: var(--logos-text-secondary);
+      border: 1px solid var(--logos-border);
       border-radius: var(--radius-md);
       font-size: var(--font-size-sm);
       cursor: pointer;
@@ -121,9 +135,9 @@ class FiltersBar extends LitElement {
     }
 
     .filters-bar__clear:hover {
-      background-color: var(--color-bg);
-      color: var(--color-text);
-      border-color: var(--color-primary);
+      background-color: var(--logos-bg);
+      color: var(--logos-text);
+      border-color: var(--logos-primary);
     }
   `;
 
@@ -221,6 +235,15 @@ class FiltersBar extends LitElement {
             </select>
           </div>
 
+          <button
+            class="filters-bar__toggle ${this.showDone
+              ? 'filters-bar__toggle--active'
+              : ''}"
+            @click=${this._handleShowDoneToggle}
+          >
+            Show completed
+          </button>
+
           ${hasFilters
             ? html`
                 <button
@@ -231,18 +254,6 @@ class FiltersBar extends LitElement {
                 </button>
               `
             : ''}
-        </div>
-
-        <div class="filters-bar__row">
-          <label class="filters-bar__checkbox-wrapper">
-            <input
-              type="checkbox"
-              class="filters-bar__checkbox"
-              .checked=${this.showDone}
-              @change=${this._handleShowDoneToggle}
-            />
-            <span class="filters-bar__checkbox-label">Show completed</span>
-          </label>
         </div>
       </div>
     `;

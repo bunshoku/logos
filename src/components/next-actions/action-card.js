@@ -16,15 +16,15 @@ class ActionCard extends LitElement {
 
     .action-card {
       padding: var(--space-md);
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
+      background: var(--logos-surface);
+      border: 1px solid var(--logos-border);
       border-radius: var(--radius-md);
       transition: all var(--transition-fast);
       cursor: pointer;
     }
 
     .action-card:hover {
-      border-color: var(--color-primary);
+      border-color: var(--logos-primary);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
@@ -48,7 +48,7 @@ class ActionCard extends LitElement {
       width: 20px;
       height: 20px;
       cursor: pointer;
-      accent-color: var(--color-primary);
+      accent-color: var(--logos-primary);
     }
 
     .action-card__content {
@@ -58,7 +58,7 @@ class ActionCard extends LitElement {
 
     .action-card__text {
       font-size: var(--font-size-base);
-      color: var(--color-text);
+      color: var(--logos-text);
       line-height: 1.5;
       word-break: break-word;
       margin-bottom: var(--space-xs);
@@ -66,7 +66,7 @@ class ActionCard extends LitElement {
 
     .action-card__text--done {
       text-decoration: line-through;
-      color: var(--color-text-secondary);
+      color: var(--logos-text-secondary);
     }
 
     .action-card__meta {
@@ -78,26 +78,26 @@ class ActionCard extends LitElement {
 
     .action-card__tag {
       padding: 2px 8px;
-      background-color: var(--color-bg);
-      border: 1px solid var(--color-border);
+      background-color: var(--logos-bg);
+      border: 1px solid var(--logos-border);
       border-radius: var(--radius-sm);
       font-size: var(--font-size-xs);
-      color: var(--color-text-secondary);
+      color: var(--logos-text-secondary);
     }
 
     .action-card__due {
       font-size: var(--font-size-sm);
-      color: var(--color-primary);
+      color: var(--logos-primary);
       font-weight: 500;
     }
 
     .action-card__due--overdue {
-      color: var(--color-danger);
+      color: var(--logos-danger);
     }
 
     .action-card__notes-indicator {
       font-size: var(--font-size-xs);
-      color: var(--color-text-secondary);
+      color: var(--logos-text-secondary);
     }
   `;
 

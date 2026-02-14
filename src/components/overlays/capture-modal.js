@@ -43,11 +43,12 @@ class CaptureModal extends LitElement {
     }
 
     .capture-modal__content {
-      background-color: var(--color-bg);
+      background-color: var(--logos-bg);
       border-radius: var(--radius-lg);
       padding: var(--space-xl);
       width: 90%;
       max-width: 600px;
+      box-sizing: border-box;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     }
 
@@ -58,21 +59,24 @@ class CaptureModal extends LitElement {
     .capture-modal__title {
       font-size: var(--font-size-xl);
       font-weight: 600;
-      color: var(--color-text);
+      color: var(--logos-text);
       margin-bottom: var(--space-xs);
     }
 
     .capture-modal__hint {
       font-size: var(--font-size-sm);
-      color: var(--color-text-secondary);
+      color: var(--logos-text-secondary);
     }
 
     .capture-modal__input {
       width: 100%;
       padding: var(--space-md);
-      background-color: var(--color-surface);
-      color: var(--color-text);
-      border: 2px solid var(--color-border);
+      box-sizing: border-box;
+      background-color: var(--logos-surface);
+      color: var(--logos-text);
+      line-height: 1.5;
+      word-break: break-word;
+      border: 2px solid var(--logos-border);
       border-radius: var(--radius-md);
       font-size: var(--font-size-base);
       outline: none;
@@ -83,7 +87,7 @@ class CaptureModal extends LitElement {
     }
 
     .capture-modal__input:focus {
-      border-color: var(--color-primary);
+      border-color: var(--logos-primary);
     }
 
     .capture-modal__footer {
@@ -95,14 +99,14 @@ class CaptureModal extends LitElement {
 
     .capture-modal__shortcuts {
       font-size: var(--font-size-sm);
-      color: var(--color-text-secondary);
+      color: var(--logos-text-secondary);
     }
 
     .capture-modal__shortcuts kbd {
       display: inline-block;
       padding: 2px 6px;
-      background-color: var(--color-surface);
-      border: 1px solid var(--color-border);
+      background-color: var(--logos-surface);
+      border: 1px solid var(--logos-border);
       border-radius: 4px;
       font-family: monospace;
       font-size: var(--font-size-xs);

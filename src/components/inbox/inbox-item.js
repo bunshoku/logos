@@ -16,14 +16,14 @@ class InboxItem extends LitElement {
 
     .inbox-item {
       padding: var(--space-md);
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
+      background: var(--logos-surface);
+      border: 1px solid var(--logos-border);
       border-radius: var(--radius-md);
       transition: all var(--transition-fast);
     }
 
     .inbox-item:hover {
-      border-color: var(--color-primary);
+      border-color: var(--logos-primary);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
@@ -38,43 +38,46 @@ class InboxItem extends LitElement {
     .inbox-item__text {
       flex: 1;
       font-size: var(--font-size-base);
-      color: var(--color-text);
+      color: var(--logos-text);
       line-height: 1.5;
       word-break: break-word;
     }
 
     .inbox-item__meta {
       font-size: var(--font-size-sm);
-      color: var(--color-text-secondary);
+      color: var(--logos-text-secondary);
     }
 
     .inbox-item__actions {
       display: flex;
+      justify-content: flex-end;
+      align-items: center;
       gap: var(--space-sm);
       margin-top: var(--space-sm);
     }
 
     .btn-clarify {
-      padding: var(--space-xs) var(--space-sm);
-      background-color: var(--color-primary);
-      color: white;
+      padding: var(--space-sm) var(--space-sm);
+      background-color: var(--logos-text);
+      color: var(--logos-bg);
       border: none;
       border-radius: var(--radius-sm);
       font-size: var(--font-size-sm);
       font-weight: 500;
       cursor: pointer;
-      transition: background-color var(--transition-fast);
+      // transition: background 120ms ease, border-color 120ms ease;
+      
     }
 
     .btn-clarify:hover {
-      background-color: var(--color-primary-hover);
+      filter: brightness(0.98);
     }
 
     .btn-delete {
       padding: var(--space-xs) var(--space-sm);
       background-color: transparent;
-      color: var(--color-danger);
-      border: 1px solid var(--color-border);
+      color: var(--logos-danger);
+      border: 1px solid var(--logos-border);
       border-radius: var(--radius-sm);
       font-size: var(--font-size-sm);
       cursor: pointer;
@@ -82,9 +85,9 @@ class InboxItem extends LitElement {
     }
 
     .btn-delete:hover {
-      background-color: var(--color-danger);
+      background-color: var(--logos-danger);
       color: white;
-      border-color: var(--color-danger);
+      border-color: var(--logos-danger);
     }
   `;
 

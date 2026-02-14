@@ -25,13 +25,13 @@ class PlaceholderPage extends LitElement {
     .page__title {
       font-size: var(--font-size-2xl);
       font-weight: 600;
-      color: var(--color-text);
+      color: var(--logos-text);
       margin-bottom: var(--space-sm);
     }
 
     .page__subtitle {
       font-size: var(--font-size-base);
-      color: var(--color-text-secondary);
+      color: var(--logos-text-secondary);
     }
 
     .page__content {
@@ -40,11 +40,11 @@ class PlaceholderPage extends LitElement {
 
     .placeholder {
       padding: var(--space-xl);
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
+      background: var(--logos-surface);
+      border: 1px solid var(--logos-border);
       border-radius: var(--radius-lg);
       text-align: center;
-      color: var(--color-text-secondary);
+        color: var(--logos-text-secondary);
     }
   `;
 

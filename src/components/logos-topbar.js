@@ -18,16 +18,10 @@ class LogosTopbar extends LitElement {
     .topbar {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-end;
       padding: var(--space-md) var(--space-lg);
-      background: var(--color-bg);
-      border-bottom: 1px solid var(--color-border);
-    }
-
-    .topbar__left {
-      display: flex;
-      align-items: center;
-      gap: var(--space-md);
+      background: var(--logos-bg);
+      border-bottom: 1px solid var(--logos-border);
     }
 
     .topbar__right {
@@ -38,7 +32,7 @@ class LogosTopbar extends LitElement {
 
     .topbar__hints {
       font-size: var(--font-size-sm);
-      color: var(--color-text-secondary);
+      color: var(--logos-text-secondary);
       user-select: none;
     }
 
@@ -48,26 +42,31 @@ class LogosTopbar extends LitElement {
 
     .btn-capture {
       padding: var(--space-sm) var(--space-md);
-      background-color: var(--color-primary);
-      color: white;
-      border: none;
+      background-color: var(--logos-surface);
+      color: var(--logos-blue);
+      border: 1px solid var(--logos-blue);
       border-radius: var(--radius-md);
-      font-weight: 500;
+      font-weight: 600;
       font-size: var(--font-size-sm);
       cursor: pointer;
-      transition: background-color var(--transition-fast);
+      transition:
+        background-color var(--transition-fast),
+        border-color var(--transition-fast),
+        color var(--transition-fast);
     }
 
     .btn-capture:hover {
-      background-color: var(--color-primary-hover);
+      background-color: var(--logos-surface-2);
+      border-color: var(--logos-gold);
+      color: var(--logos-gold);
     }
 
     .btn-theme {
       padding: var(--space-sm);
       background: none;
-      border: 1px solid var(--color-border);
+      border: 1px solid var(--logos-border);
       border-radius: var(--radius-md);
-      color: var(--color-text);
+      color: var(--logos-text);
       cursor: pointer;
       transition: all var(--transition-fast);
       display: flex;
@@ -78,8 +77,8 @@ class LogosTopbar extends LitElement {
     }
 
     .btn-theme:hover {
-      background-color: var(--color-surface);
-      border-color: var(--color-primary);
+      background-color: var(--logos-surface);
+      border-color: var(--logos-primary);
     }
   `;
 
@@ -106,13 +105,11 @@ class LogosTopbar extends LitElement {
 
     return html`
       <div class="topbar">
-        <div class="topbar__left">
+        <div class="topbar__right">
           <button class="btn-capture" @click=${this._handleCaptureClick}>
             + Capture
           </button>
-        </div>
 
-        <div class="topbar__right">
           <div class="topbar__hints">
             Capture: <strong>c</strong>
             <span class="topbar__hint-sep">•</span>

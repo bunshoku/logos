@@ -12,9 +12,8 @@ export function createRouter(host) {
     {
       path: '/',
       render: () => {
-        // Default route - redirect to /next
-        router.goto('/next');
-        return '';
+        store.dispatch(setRoute('next-actions'));
+        return host.renderPage('next-actions');
       },
     },
     {

@@ -22,8 +22,8 @@ class LogosSidebar extends LitElement {
       flex-direction: column;
       height: 100%;
       padding: var(--space-lg);
-      background: var(--color-surface);
-      border-right: 1px solid var(--color-border);
+      background: var(--logos-surface);
+      border-right: 1px solid var(--logos-border);
     }
 
     .sidebar__header {
@@ -43,7 +43,7 @@ class LogosSidebar extends LitElement {
       justify-content: space-between;
       padding: var(--space-sm) var(--space-md);
       border-radius: var(--radius-md);
-      color: var(--color-text);
+      color: var(--logos-text);
       text-decoration: none;
       font-size: var(--font-size-base);
       transition: background-color var(--transition-fast);
@@ -51,16 +51,17 @@ class LogosSidebar extends LitElement {
     }
 
     .nav-item:hover {
-      background-color: var(--color-bg);
+      background-color: var(--logos-bg);
     }
 
     .nav-item--active {
-      background-color: var(--color-primary);
-      color: white;
+      // background-color: var(--logos-primary);
+      background-color: var(--logos-bg);
+      // color: white;
     }
 
     .nav-item--active:hover {
-      background-color: var(--color-primary-hover);
+      background-color: var(--logos-primary-hover);
     }
 
     .nav-item__badge {
@@ -71,8 +72,8 @@ class LogosSidebar extends LitElement {
       height: 20px;
       padding: 0 6px;
       border-radius: 10px;
-      background-color: var(--color-bg);
-      color: var(--color-text);
+      background-color: var(--logos-bg);
+      color: var(--logos-text);
       font-size: var(--font-size-xs);
       font-weight: 600;
     }
@@ -90,10 +91,14 @@ class LogosSidebar extends LitElement {
     this.actionsCount = 0;
   }
 
-  _handleNavClick(path) {
+  _handleNavClick(path, route) {
+    if (route) {
+      this.currentRoute = route;
+    }
+
     this.dispatchEvent(
       new CustomEvent('navigate', {
-        detail: { path },
+        detail: { path, route },
         bubbles: true,
         composed: true,
       })
@@ -116,7 +121,7 @@ class LogosSidebar extends LitElement {
             class="nav-item ${this._isActive('next-actions')
               ? 'nav-item--active'
               : ''}"
-            @click=${() => this._handleNavClick('/next')}
+            @click=${() => this._handleNavClick('/next', 'next-actions')}
           >
             <span>Next Actions</span>
             ${this.actionsCount > 0
@@ -128,7 +133,7 @@ class LogosSidebar extends LitElement {
             class="nav-item ${this._isActive('inbox')
               ? 'nav-item--active'
               : ''}"
-            @click=${() => this._handleNavClick('/inbox')}
+            @click=${() => this._handleNavClick('/inbox', 'inbox')}
           >
             <span>Inbox</span>
             ${this.inboxCount > 0
@@ -140,7 +145,7 @@ class LogosSidebar extends LitElement {
             class="nav-item ${this._isActive('notes')
               ? 'nav-item--active'
               : ''}"
-            @click=${() => this._handleNavClick('/notes')}
+            @click=${() => this._handleNavClick('/notes', 'notes')}
           >
             <span>Notes</span>
           </a>
@@ -149,7 +154,7 @@ class LogosSidebar extends LitElement {
             class="nav-item ${this._isActive('review')
               ? 'nav-item--active'
               : ''}"
-            @click=${() => this._handleNavClick('/review')}
+            @click=${() => this._handleNavClick('/review', 'review')}
           >
             <span>Review</span>
           </a>
@@ -158,7 +163,7 @@ class LogosSidebar extends LitElement {
             class="nav-item ${this._isActive('habits')
               ? 'nav-item--active'
               : ''}"
-            @click=${() => this._handleNavClick('/habits')}
+            @click=${() => this._handleNavClick('/habits', 'habits')}
           >
             <span>Habits</span>
           </a>
@@ -167,7 +172,7 @@ class LogosSidebar extends LitElement {
             class="nav-item ${this._isActive('settings')
               ? 'nav-item--active'
               : ''}"
-            @click=${() => this._handleNavClick('/settings')}
+            @click=${() => this._handleNavClick('/settings', 'settings')}
           >
             <span>Settings</span>
           </a>

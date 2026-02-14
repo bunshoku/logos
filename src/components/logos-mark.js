@@ -12,12 +12,12 @@ class LogosMark extends LitElement {
     .mark {
       font-size: var(--font-size-xl);
       font-weight: 600;
-      color: var(--color-text);
+      color: var(--logos-text);
       letter-spacing: 0.02em;
     }
 
     .mark__dot {
-      color: var(--color-primary);
+      color: var(--logos-primary);
       font-weight: 400;
     }
   `;

@@ -1,4 +1,4 @@
-import { isTypingTarget } from './dom.js';
+import { isTypingEvent } from './dom.js';
 import { store } from '../state/store.js';
 import { openCapture, closeCapture, closeDrawer } from '../state/actions.js';
 
@@ -25,7 +25,7 @@ export function registerHotkey(key, handler, options = {}) {
     }
 
     // Guard against typing in inputs (unless disabled)
-    if (ignoreTyping && isTypingTarget(event.target)) {
+    if (ignoreTyping && isTypingEvent(event)) {
       return;
     }
 

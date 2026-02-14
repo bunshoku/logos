@@ -47,7 +47,7 @@ class DetailsDrawer extends LitElement {
       bottom: 0;
       width: 480px;
       max-width: 90vw;
-      background-color: var(--color-bg);
+      background-color: var(--logos-bg);
       box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
       z-index: 950;
       display: flex;
@@ -57,7 +57,7 @@ class DetailsDrawer extends LitElement {
 
     .drawer__header {
       padding: var(--space-lg);
-      border-bottom: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--logos-border);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -66,21 +66,21 @@ class DetailsDrawer extends LitElement {
     .drawer__title {
       font-size: var(--font-size-xl);
       font-weight: 600;
-      color: var(--color-text);
+      color: var(--logos-text);
     }
 
     .btn-close {
       padding: var(--space-xs);
       background: none;
       border: none;
-      color: var(--color-text-secondary);
+      color: var(--logos-text-secondary);
       cursor: pointer;
       font-size: var(--font-size-lg);
       line-height: 1;
     }
 
     .btn-close:hover {
-      color: var(--color-text);
+      color: var(--logos-text);
     }
 
     .drawer__content {
@@ -91,7 +91,7 @@ class DetailsDrawer extends LitElement {
 
     .drawer__footer {
       padding: var(--space-lg);
-      border-top: 1px solid var(--color-border);
+      border-top: 1px solid var(--logos-border);
       display: flex;
       gap: var(--space-sm);
       justify-content: flex-end;
@@ -105,20 +105,20 @@ class DetailsDrawer extends LitElement {
       display: block;
       font-size: var(--font-size-sm);
       font-weight: 500;
-      color: var(--color-text);
+        color: var(--logos-text);
       margin-bottom: var(--space-xs);
     }
 
     .form-field__required {
-      color: var(--color-danger);
+      color: var(--logos-danger);
     }
 
     .form-field__input {
       width: 100%;
       padding: var(--space-sm) var(--space-md);
-      background-color: var(--color-surface);
-      color: var(--color-text);
-      border: 1px solid var(--color-border);
+      background-color: var(--logos-surface);
+        color: var(--logos-text);
+      border: 1px solid var(--logos-border);
       border-radius: var(--radius-md);
       font-size: var(--font-size-base);
       outline: none;
@@ -126,16 +126,16 @@ class DetailsDrawer extends LitElement {
     }
 
     .form-field__input:focus {
-      border-color: var(--color-primary);
+      border-color: var(--logos-primary);
     }
 
     .form-field__textarea {
       width: 100%;
       min-height: 100px;
       padding: var(--space-sm) var(--space-md);
-      background-color: var(--color-surface);
-      color: var(--color-text);
-      border: 1px solid var(--color-border);
+      background-color: var(--logos-surface);
+        color: var(--logos-text);
+      border: 1px solid var(--logos-border);
       border-radius: var(--radius-md);
       font-size: var(--font-size-base);
       outline: none;
@@ -144,15 +144,15 @@ class DetailsDrawer extends LitElement {
     }
 
     .form-field__textarea:focus {
-      border-color: var(--color-primary);
+      border-color: var(--logos-primary);
     }
 
     .form-field__select {
       width: 100%;
       padding: var(--space-sm) var(--space-md);
-      background-color: var(--color-surface);
-      color: var(--color-text);
-      border: 1px solid var(--color-border);
+      background-color: var(--logos-surface);
+        color: var(--logos-text);
+      border: 1px solid var(--logos-border);
       border-radius: var(--radius-md);
       font-size: var(--font-size-base);
       outline: none;
@@ -160,12 +160,12 @@ class DetailsDrawer extends LitElement {
     }
 
     .form-field__select:focus {
-      border-color: var(--color-primary);
+      border-color: var(--logos-primary);
     }
 
     .btn-primary {
       padding: var(--space-sm) var(--space-lg);
-      background-color: var(--color-primary);
+      background-color: var(--logos-primary);
       color: white;
       border: none;
       border-radius: var(--radius-md);
@@ -175,7 +175,7 @@ class DetailsDrawer extends LitElement {
     }
 
     .btn-primary:hover {
-      background-color: var(--color-primary-hover);
+      background-color: var(--logos-primary-hover);
     }
 
     .btn-primary:disabled {
@@ -186,24 +186,24 @@ class DetailsDrawer extends LitElement {
     .btn-secondary {
       padding: var(--space-sm) var(--space-lg);
       background-color: transparent;
-      color: var(--color-text);
-      border: 1px solid var(--color-border);
+        color: var(--logos-text);
+      border: 1px solid var(--logos-border);
       border-radius: var(--radius-md);
       cursor: pointer;
       transition: all var(--transition-fast);
     }
 
     .btn-secondary:hover {
-      background-color: var(--color-surface);
-      border-color: var(--color-primary);
+      background-color: var(--logos-surface);
+      border-color: var(--logos-primary);
     }
 
     .source-text {
       padding: var(--space-md);
-      background-color: var(--color-surface);
-      border: 1px solid var(--color-border);
+      background-color: var(--logos-surface);
+      border: 1px solid var(--logos-border);
       border-radius: var(--radius-md);
-      color: var(--color-text-secondary);
+      color: var(--logos-text-secondary);
       font-size: var(--font-size-sm);
       margin-bottom: var(--space-lg);
       line-height: 1.5;
@@ -211,7 +211,7 @@ class DetailsDrawer extends LitElement {
 
     .source-text__label {
       font-weight: 500;
-      color: var(--color-text);
+        color: var(--logos-text);
       display: block;
       margin-bottom: var(--space-xs);
     }

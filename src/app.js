@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { store } from './state/store.js';
-import { setTheme, openCapture } from './state/actions.js';
+import { setTheme, setRoute, openCapture } from './state/actions.js';
 import { getActiveActionsCount, getInboxCount } from './state/selectors.js';
 import { createRouter } from './router.js';
 import './components/logos-sidebar.js';
@@ -25,7 +25,7 @@ class LogosApp extends LitElement {
       grid-template-columns: 240px 1fr;
       grid-template-rows: auto 1fr;
       height: 100%;
-      background: var(--color-bg);
+      background: var(--logos-bg);
     }
 
     .app__sidebar {
@@ -79,6 +79,10 @@ class LogosApp extends LitElement {
   }
 
   _handleNavigate(e) {
+    if (e.detail?.route) {
+      store.dispatch(setRoute(e.detail.route));
+    }
+
     if (this._router) {
       this._router.goto(e.detail.path);
     }
@@ -152,7 +156,7 @@ class LogosApp extends LitElement {
         </div>
 
         <div class="app__main">
-          ${this._router ? this._router.outlet() : ''}
+          ${this.renderPage(route || 'next-actions')}
         </div>
 
         <capture-modal></capture-modal>

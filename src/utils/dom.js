@@ -13,6 +13,10 @@ export function isTypingTarget(element) {
     return false;
   }
 
+  if (!(element instanceof Element)) {
+    return false;
+  }
+
   const tagName = element.tagName.toLowerCase();
 
   // Check for input or textarea
@@ -29,6 +33,26 @@ export function isTypingTarget(element) {
   }
 
   return false;
+}
+
+/**
+ * Check whether a keyboard event originated from a typing target.
+ * Supports shadow DOM by scanning composed event path.
+ * @param {KeyboardEvent} event - Keyboard event to inspect
+ * @returns {boolean} True if event comes from an input-like element
+ */
+export function isTypingEvent(event) {
+  if (!event) {
+    return false;
+  }
+
+  const path = typeof event.composedPath === 'function' ? event.composedPath() : [];
+
+  if (path.length > 0) {
+    return path.some((node) => isTypingTarget(node));
+  }
+
+  return isTypingTarget(event.target);
 }
 
 /**

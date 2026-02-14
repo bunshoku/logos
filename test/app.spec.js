@@ -120,6 +120,32 @@ describe('lo•gos Application Tests', () => {
       // Cleanup
       document.body.removeChild(input);
     });
+
+    it('should not prevent typing "c" in capture modal textarea', async () => {
+      store.dispatch(openCapture());
+      await new Promise((resolve) => setTimeout(resolve, 50));
+
+      const captureModal = app.shadowRoot.querySelector('capture-modal');
+      expect(captureModal).toBeTruthy();
+
+      const textarea = captureModal.shadowRoot.querySelector('textarea');
+      expect(textarea).toBeTruthy();
+
+      textarea.focus();
+
+      const event = new KeyboardEvent('keydown', {
+        key: 'c',
+        bubbles: true,
+        cancelable: true,
+        composed: true,
+      });
+
+      const wasNotCanceled = textarea.dispatchEvent(event);
+
+      expect(wasNotCanceled).toBe(true);
+      expect(event.defaultPrevented).toBe(false);
+      expect(store.getState().ui.captureOpen).toBe(true);
+    });
   });
 
   describe('Test 3: Enter in capture saves Inbox item and navigates to Inbox', () => {

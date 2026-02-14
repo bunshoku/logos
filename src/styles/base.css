@@ -8,15 +8,14 @@
 
 html {
   font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
-    Arial, sans-serif;
+    -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Helvetica Neue,Arial,sans-serif;
   font-size: 16px;
   line-height: 1.5;
 }
 
 body {
-  background-color: var(--color-bg);
-  color: var(--color-text);
+  background-color: var(--logos-bg);
+  color: var(--logos-text);
   transition:
     background-color var(--transition-base),
     color var(--transition-base);
@@ -37,10 +36,10 @@ textarea {
 }
 
 a {
-  color: var(--color-primary);
+  color: var(--logos-primary);
   text-decoration: none;
 }
 
 a:hover {
-  color: var(--color-primary-hover);
+  color: var(--logos-primary-hover);
 }

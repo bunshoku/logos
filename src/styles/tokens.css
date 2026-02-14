@@ -28,15 +28,6 @@
 
 /* Light theme (default) */
 [data-theme='light'] {
-  /* --color-bg: #ecebe6;
-  --color-surface: #ffffff;
-  --color-border: rgba(28, 28, 28, 0.14);
-  --logos-text: #1c1c1c;
-  --color-text-secondary: #4c4c4c;
-  --color-primary: rgba(28, 28, 28, 0.08);
-  --color-primary-hover: rgba(28, 28, 28, 0.08);
-  --color-success: #10b981;
-  --color-danger: #ef4444; */
 
     --logos-bg: #ecebe6;
     --logos-surface: #ffffff;

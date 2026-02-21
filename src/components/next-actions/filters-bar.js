@@ -152,11 +152,9 @@ class FiltersBar extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
+    this._syncFromState(store.getState());
     this._unsubscribe = store.subscribe((state) => {
-      this.query = state.ui.query;
-      this.contextFilter = state.ui.contextFilter;
-      this.energyFilter = state.ui.energyFilter;
-      this.showDone = state.ui.showDone;
+      this._syncFromState(state);
     });
   }
 
@@ -165,6 +163,13 @@ class FiltersBar extends LitElement {
     if (this._unsubscribe) {
       this._unsubscribe();
     }
+  }
+
+  _syncFromState(state) {
+    this.query = state.ui.query;
+    this.contextFilter = state.ui.contextFilter;
+    this.energyFilter = state.ui.energyFilter;
+    this.showDone = state.ui.showDone;
   }
 
   _handleSearchInput(e) {

@@ -17,11 +17,11 @@ import {
   getActiveActionsCount,
   getFilteredActions,
 } from '../src/state/selectors.js';
-import { fireKeyboardEvent, waitForElement, typeIntoElement } from './setup.js';
+import { fireKeyboardEvent, waitForElement } from './setup.js';
 import { nanoid } from 'nanoid';
 
-// Import app component
-import '../src/app.js';
+// Import app bootstrap (includes theme persistence wiring)
+import '../src/main.js';
 
 function getDeepActiveElement(root = document) {
   let current = root.activeElement;
@@ -590,29 +590,23 @@ describe('lo•gos Application Tests', () => {
 
       // Initial theme should be light
       expect(store.getState().ui.theme).toBe('light');
+      expect(document.documentElement.getAttribute('data-theme')).toBe('light');
 
       // Toggle to dark
       store.dispatch(setTheme('dark'));
 
       // Verify state updated
       expect(store.getState().ui.theme).toBe('dark');
-
-      // Wait for localStorage update
-      setTimeout(() => {
-        // Verify localStorage was updated
-        expect(localStorage.getItem('logos.theme')).toBe('dark');
-      }, 100);
+      expect(localStorage.getItem('logos.theme')).toBe('dark');
+      expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
 
       // Toggle back to light
       store.dispatch(setTheme('light'));
 
       // Verify state updated
       expect(store.getState().ui.theme).toBe('light');
-
-      setTimeout(() => {
-        // Verify localStorage was updated
-        expect(localStorage.getItem('logos.theme')).toBe('light');
-      }, 100);
+      expect(localStorage.getItem('logos.theme')).toBe('light');
+      expect(document.documentElement.getAttribute('data-theme')).toBe('light');
     });
   });
 
@@ -743,6 +737,99 @@ describe('lo•gos Application Tests', () => {
 
       // Toggle showDone to true would show both (tested implicitly)
       // The filtering logic is in selectors.js
+    });
+
+    it('should retain search, context, energy, and show completed after page navigation', async () => {
+      const doneMatchingAction = {
+        id: nanoid(),
+        text: 'Write report and archive',
+        done: true,
+        createdAt: Date.now(),
+        context: 'work',
+        energy: 'high',
+      };
+
+      const activeMatchingAction = {
+        id: nanoid(),
+        text: 'Write report summary',
+        done: false,
+        createdAt: Date.now() - 1000,
+        context: 'work',
+        energy: 'high',
+      };
+
+      const nonMatchingAction = {
+        id: nanoid(),
+        text: 'Do laundry',
+        done: false,
+        createdAt: Date.now() - 2000,
+        context: 'home',
+        energy: 'low',
+      };
+
+      store.dispatch(clarifyInboxItem('dummy1', doneMatchingAction));
+      store.dispatch(clarifyInboxItem('dummy2', activeMatchingAction));
+      store.dispatch(clarifyInboxItem('dummy3', nonMatchingAction));
+
+      store.dispatch(setRoute('next-actions'));
+      await app.updateComplete;
+
+      let page = app.shadowRoot.querySelector('next-actions-page');
+      await page.updateComplete;
+      let filtersBar = page.shadowRoot.querySelector('filters-bar');
+      await filtersBar.updateComplete;
+
+      const searchInput = filtersBar.shadowRoot.querySelector('.filters-bar__search-input');
+      const [contextSelect, energySelect] = filtersBar.shadowRoot.querySelectorAll(
+        '.filters-bar__select'
+      );
+      const showDoneButton = filtersBar.shadowRoot.querySelector('.filters-bar__toggle');
+
+      searchInput.focus();
+      searchInput.value = 'report';
+      searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+      contextSelect.value = 'work';
+      contextSelect.dispatchEvent(new Event('change', { bubbles: true }));
+      energySelect.value = 'high';
+      energySelect.dispatchEvent(new Event('change', { bubbles: true }));
+      showDoneButton.click();
+
+      await new Promise((resolve) => setTimeout(resolve, 50));
+
+      fireKeyboardEvent(document.body, 'Escape');
+      await new Promise((resolve) => setTimeout(resolve, 25));
+      expect(getDeepActiveElement(document)).not.toBe(searchInput);
+
+      store.dispatch(setRoute('inbox'));
+      await app.updateComplete;
+      store.dispatch(setRoute('next-actions'));
+      await app.updateComplete;
+
+      page = app.shadowRoot.querySelector('next-actions-page');
+      await page.updateComplete;
+      filtersBar = page.shadowRoot.querySelector('filters-bar');
+      await filtersBar.updateComplete;
+
+      const remountedSearchInput = filtersBar.shadowRoot.querySelector(
+        '.filters-bar__search-input'
+      );
+      const [remountedContextSelect, remountedEnergySelect] =
+        filtersBar.shadowRoot.querySelectorAll('.filters-bar__select');
+      const remountedShowDoneButton =
+        filtersBar.shadowRoot.querySelector('.filters-bar__toggle');
+
+      expect(remountedSearchInput.value).toBe('report');
+      expect(remountedContextSelect.value).toBe('work');
+      expect(remountedEnergySelect.value).toBe('high');
+      expect(remountedShowDoneButton.classList.contains('filters-bar__toggle--active')).toBe(true);
+
+      const visibleCards = Array.from(page.shadowRoot.querySelectorAll('action-card'));
+      const visibleTexts = visibleCards.map((card) => card.action.text);
+
+      expect(visibleCards.length).toBe(2);
+      expect(visibleTexts).toContain('Write report and archive');
+      expect(visibleTexts).toContain('Write report summary');
+      expect(visibleTexts).not.toContain('Do laundry');
     });
   });
 });

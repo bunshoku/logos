@@ -81,11 +81,27 @@ function blurNextActionsSearchIfFocused() {
   }
 
   const activeElement = getDeepActiveElement(document);
-  if (activeElement !== searchInput) {
+  const filtersRoot = searchInput.getRootNode();
+
+  if (!filtersRoot?.querySelectorAll) {
     return false;
   }
 
-  searchInput.blur();
+  const escBlurTargets = filtersRoot.querySelectorAll(
+    [
+      '.filters-bar__search-input',
+      '.filters-bar__select',
+      '.filters-bar__toggle',
+      '.filters-bar__clear',
+    ].join(', ')
+  );
+
+  const isEscBlurTarget = Array.from(escBlurTargets).includes(activeElement);
+  if (!isEscBlurTarget) {
+    return false;
+  }
+
+  activeElement.blur();
   return true;
 }
 

@@ -15,6 +15,16 @@ class InboxItem extends LitElement {
       display: block;
     }
 
+    :host(:focus) {
+      outline: none;
+    }
+
+    :host(:focus) .inbox-item,
+    :host(:focus-within) .inbox-item {
+      border-color: var(--logos-primary);
+      box-shadow: inset 0 0 0 1px var(--logos-primary);
+    }
+
     .inbox-item {
       padding: var(--space-md);
       background: var(--logos-surface);
@@ -109,6 +119,8 @@ class InboxItem extends LitElement {
     .clarify-textarea:focus {
       outline: none;
       border-color: var(--logos-primary);
+      outline: 2px solid var(--logos-primary);
+      outline-offset: 1px;
     }
 
     .clarify-actions {
@@ -257,6 +269,10 @@ class InboxItem extends LitElement {
       dueDate: '',
       notes: '',
     };
+
+    this.updateComplete.then(() => {
+      this.focus();
+    });
   }
 
   _handleClarifySave() {

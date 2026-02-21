@@ -108,6 +108,16 @@ function triggerInboxShortcutAction(action) {
   return false;
 }
 
+function isInboxHideCombo(event) {
+  const key = event.key?.toLowerCase();
+  if (key !== 'h') {
+    return false;
+  }
+
+  const hasCmdOrCtrl = event.metaKey || event.ctrlKey;
+  return hasCmdOrCtrl && event.altKey && !event.shiftKey;
+}
+
 function moveItemFocus(direction) {
   const state = store.getState();
 
@@ -347,16 +357,20 @@ export function setupGlobalHotkeys(router) {
   );
   cleanups.push(inboxCreateCleanup);
 
-  // "h" - Hide/cancel clarify panel for selected Inbox item
+  // "Cmd/Ctrl+Alt+H" - Hide/cancel clarify panel for selected Inbox item
   const inboxHideCleanup = registerHotkey(
     'h',
     (e) => {
+      if (!isInboxHideCombo(e)) {
+        return;
+      }
+
       const didHandle = triggerInboxShortcutAction('hide');
       if (didHandle) {
         e.preventDefault();
       }
     },
-    { ignoreTyping: true }
+    { ignoreTyping: false }
   );
   cleanups.push(inboxHideCleanup);
 

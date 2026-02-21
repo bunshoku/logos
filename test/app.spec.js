@@ -341,7 +341,15 @@ describe('lo•gos Application Tests', () => {
       await new Promise((resolve) => setTimeout(resolve, 25));
       expect(item.isClarifying).toBe(true);
 
+      const notesField = item.shadowRoot.querySelector('.clarify-textarea');
+      expect(notesField).toBeTruthy();
+      notesField.focus();
+
       fireKeyboardEvent(document.body, 'h');
+      await new Promise((resolve) => setTimeout(resolve, 25));
+      expect(item.isClarifying).toBe(true);
+
+      fireKeyboardEvent(document.body, 'h', { ctrlKey: true, altKey: true });
       await new Promise((resolve) => setTimeout(resolve, 25));
       expect(item.isClarifying).toBe(false);
 

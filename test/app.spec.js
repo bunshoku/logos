@@ -365,6 +365,133 @@ describe('lo•gos Application Tests', () => {
 
       expect(getDeepActiveElement(document)).not.toBe(searchInput);
     });
+
+    it('should unfocus context filter with "Escape"', async () => {
+      store.dispatch(setRoute('next-actions'));
+      await app.updateComplete;
+
+      const page = app.shadowRoot.querySelector('next-actions-page');
+      expect(page).toBeTruthy();
+      await page.updateComplete;
+
+      const filtersBar = page.shadowRoot.querySelector('filters-bar');
+      expect(filtersBar).toBeTruthy();
+      await filtersBar.updateComplete;
+
+      const searchInput = filtersBar.shadowRoot.querySelector('.filters-bar__search-input');
+      const [contextSelect, energySelect] = filtersBar.shadowRoot.querySelectorAll(
+        '.filters-bar__select'
+      );
+      const showDoneButton = filtersBar.shadowRoot.querySelector('.filters-bar__toggle');
+
+      expect(searchInput).toBeTruthy();
+      expect(contextSelect).toBeTruthy();
+      expect(energySelect).toBeTruthy();
+      expect(showDoneButton).toBeTruthy();
+
+      searchInput.focus();
+      searchInput.value = 'report';
+      searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+      await filtersBar.updateComplete;
+
+      const clearFiltersButton = filtersBar.shadowRoot.querySelector('.filters-bar__clear');
+      expect(clearFiltersButton).toBeTruthy();
+
+      contextSelect.focus();
+      await new Promise((resolve) => setTimeout(resolve, 25));
+      expect(getDeepActiveElement(document)).toBe(contextSelect);
+
+      fireKeyboardEvent(document.body, 'Escape');
+      await new Promise((resolve) => setTimeout(resolve, 25));
+
+      expect(getDeepActiveElement(document)).not.toBe(contextSelect);
+      expect(energySelect).toBeTruthy();
+      expect(showDoneButton).toBeTruthy();
+      expect(clearFiltersButton).toBeTruthy();
+    });
+
+    it('should unfocus energy filter with "Escape"', async () => {
+      store.dispatch(setRoute('next-actions'));
+      await app.updateComplete;
+
+      const page = app.shadowRoot.querySelector('next-actions-page');
+      expect(page).toBeTruthy();
+      await page.updateComplete;
+
+      const filtersBar = page.shadowRoot.querySelector('filters-bar');
+      expect(filtersBar).toBeTruthy();
+      await filtersBar.updateComplete;
+
+      const [, energySelect] = filtersBar.shadowRoot.querySelectorAll('.filters-bar__select');
+      expect(energySelect).toBeTruthy();
+
+      energySelect.focus();
+      await new Promise((resolve) => setTimeout(resolve, 25));
+      expect(getDeepActiveElement(document)).toBe(energySelect);
+
+      fireKeyboardEvent(document.body, 'Escape');
+      await new Promise((resolve) => setTimeout(resolve, 25));
+
+      expect(getDeepActiveElement(document)).not.toBe(energySelect);
+    });
+
+    it('should unfocus show completed toggle with "Escape"', async () => {
+      store.dispatch(setRoute('next-actions'));
+      await app.updateComplete;
+
+      const page = app.shadowRoot.querySelector('next-actions-page');
+      expect(page).toBeTruthy();
+      await page.updateComplete;
+
+      const filtersBar = page.shadowRoot.querySelector('filters-bar');
+      expect(filtersBar).toBeTruthy();
+      await filtersBar.updateComplete;
+
+      const showDoneButton = filtersBar.shadowRoot.querySelector('.filters-bar__toggle');
+      expect(showDoneButton).toBeTruthy();
+
+      showDoneButton.focus();
+      await new Promise((resolve) => setTimeout(resolve, 25));
+      expect(getDeepActiveElement(document)).toBe(showDoneButton);
+
+      fireKeyboardEvent(document.body, 'Escape');
+      await new Promise((resolve) => setTimeout(resolve, 25));
+
+      expect(getDeepActiveElement(document)).not.toBe(showDoneButton);
+    });
+
+    it('should unfocus clear filters button with "Escape"', async () => {
+      store.dispatch(setRoute('next-actions'));
+      await app.updateComplete;
+
+      const page = app.shadowRoot.querySelector('next-actions-page');
+      expect(page).toBeTruthy();
+      await page.updateComplete;
+
+      const filtersBar = page.shadowRoot.querySelector('filters-bar');
+      expect(filtersBar).toBeTruthy();
+      await filtersBar.updateComplete;
+
+      const searchInput = filtersBar.shadowRoot.querySelector('.filters-bar__search-input');
+      expect(searchInput).toBeTruthy();
+
+      searchInput.focus();
+      searchInput.value = 'report';
+      searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+      await filtersBar.updateComplete;
+
+      const clearFiltersButton = filtersBar.shadowRoot.querySelector('.filters-bar__clear');
+      expect(clearFiltersButton).toBeTruthy();
+
+      clearFiltersButton.focus();
+      await new Promise((resolve) => setTimeout(resolve, 25));
+      expect(getDeepActiveElement(document)).toBe(clearFiltersButton);
+
+      fireKeyboardEvent(document.body, 'Escape');
+      await new Promise((resolve) => setTimeout(resolve, 25));
+
+      expect(getDeepActiveElement(document)).not.toBe(clearFiltersButton);
+    });
   });
 
   describe('Test 2e: Inbox selected-item shortcuts', () => {

@@ -1,4 +1,4 @@
-import { isTypingEvent } from './dom.js';
+import { isTypingEvent, focusElement } from './dom.js';
 import { store } from '../state/store.js';
 import {
   openCapture,
@@ -26,6 +26,67 @@ function getDeepActiveElement(root = document) {
   }
 
   return current;
+}
+
+function getNextActionsSearchInput() {
+  const state = store.getState();
+  if (state.ui.route !== 'next-actions') {
+    return null;
+  }
+
+  const app = document.querySelector('logos-app');
+  if (!app?.shadowRoot) {
+    return null;
+  }
+
+  const page = app.shadowRoot.querySelector('next-actions-page');
+  if (!page?.shadowRoot) {
+    return null;
+  }
+
+  const filtersBar = page.shadowRoot.querySelector('filters-bar');
+  if (!filtersBar?.shadowRoot) {
+    return null;
+  }
+
+  return filtersBar.shadowRoot.querySelector('.filters-bar__search-input');
+}
+
+function focusNextActionsSearch() {
+  const state = store.getState();
+
+  if (state.ui.captureOpen || state.ui.drawerOpen || state.ui.shortcutsOpen) {
+    return false;
+  }
+
+  const searchInput = getNextActionsSearchInput();
+  if (!searchInput) {
+    return false;
+  }
+
+  focusElement(searchInput, true);
+  return true;
+}
+
+function blurNextActionsSearchIfFocused() {
+  const state = store.getState();
+
+  if (state.ui.captureOpen || state.ui.drawerOpen || state.ui.shortcutsOpen) {
+    return false;
+  }
+
+  const searchInput = getNextActionsSearchInput();
+  if (!searchInput) {
+    return false;
+  }
+
+  const activeElement = getDeepActiveElement(document);
+  if (activeElement !== searchInput) {
+    return false;
+  }
+
+  searchInput.blur();
+  return true;
 }
 
 function getNavigableItems() {
@@ -262,11 +323,30 @@ export function setupGlobalHotkeys(router) {
       if (state.ui.shortcutsOpen) {
         e.preventDefault();
         store.dispatch(closeShortcuts());
+        return;
+      }
+
+      // Exit Next Actions search mode when search input is focused
+      if (blurNextActionsSearchIfFocused()) {
+        e.preventDefault();
       }
     },
     { ignoreTyping: false } // Allow Escape even when typing
   );
   cleanups.push(escapeCleanup);
+
+  // "/" - Focus Next Actions search input
+  const nextActionsSearchCleanup = registerHotkey(
+    '/',
+    (e) => {
+      const didFocus = focusNextActionsSearch();
+      if (didFocus) {
+        e.preventDefault();
+      }
+    },
+    { ignoreTyping: true }
+  );
+  cleanups.push(nextActionsSearchCleanup);
 
   // "?" - Toggle keyboard shortcuts modal
   const shortcutsCleanup = registerHotkey(

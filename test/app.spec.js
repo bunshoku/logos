@@ -318,6 +318,55 @@ describe('lo•gos Application Tests', () => {
     });
   });
 
+  describe('Test 2f: Next Actions search shortcuts', () => {
+    it('should focus Next Actions search with "/"', async () => {
+      store.dispatch(setRoute('next-actions'));
+      await app.updateComplete;
+
+      const page = app.shadowRoot.querySelector('next-actions-page');
+      expect(page).toBeTruthy();
+      await page.updateComplete;
+
+      const filtersBar = page.shadowRoot.querySelector('filters-bar');
+      expect(filtersBar).toBeTruthy();
+      await filtersBar.updateComplete;
+
+      const searchInput = filtersBar.shadowRoot.querySelector('.filters-bar__search-input');
+      expect(searchInput).toBeTruthy();
+      expect(getDeepActiveElement(document)).not.toBe(searchInput);
+
+      fireKeyboardEvent(document.body, '/');
+      await new Promise((resolve) => setTimeout(resolve, 25));
+
+      expect(getDeepActiveElement(document)).toBe(searchInput);
+    });
+
+    it('should unfocus Next Actions search with "Escape"', async () => {
+      store.dispatch(setRoute('next-actions'));
+      await app.updateComplete;
+
+      const page = app.shadowRoot.querySelector('next-actions-page');
+      expect(page).toBeTruthy();
+      await page.updateComplete;
+
+      const filtersBar = page.shadowRoot.querySelector('filters-bar');
+      expect(filtersBar).toBeTruthy();
+      await filtersBar.updateComplete;
+
+      const searchInput = filtersBar.shadowRoot.querySelector('.filters-bar__search-input');
+      expect(searchInput).toBeTruthy();
+
+      fireKeyboardEvent(document.body, '/');
+      await new Promise((resolve) => setTimeout(resolve, 25));
+      expect(getDeepActiveElement(document)).toBe(searchInput);
+
+      fireKeyboardEvent(document.body, 'Escape');
+      await new Promise((resolve) => setTimeout(resolve, 25));
+
+      expect(getDeepActiveElement(document)).not.toBe(searchInput);
+    });
+  });
+
   describe('Test 2e: Inbox selected-item shortcuts', () => {
     it('should expand, hide, and create next action for selected inbox item', async () => {
       store.dispatch(setRoute('inbox'));

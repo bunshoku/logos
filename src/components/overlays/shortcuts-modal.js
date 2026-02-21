@@ -4,9 +4,11 @@ import { closeShortcuts } from '../../state/actions.js';
 
 const SHORTCUTS = [
   { key: 'c', action: 'Open quick capture' },
+  { key: '/', action: 'Focus Next Actions search' },
   { key: 'Enter', action: 'Save capture and go to Inbox (in capture)' },
   { key: 'Cmd/Ctrl+Enter', action: 'Alternative save shortcut (in capture)' },
   { key: 'Esc', action: 'Close open overlay (capture, details, or shortcuts)' },
+  { key: 'Esc (in search)', action: 'Unfocus Next Actions search' },
   { key: 'ArrowDown / j', action: 'Move focus to next item in Inbox/Next Actions' },
   { key: 'ArrowUp / k', action: 'Move focus to previous item in Inbox/Next Actions' },
   { key: 'e', action: 'Expand clarify panel for selected Inbox item' },
